@@ -28,3 +28,10 @@ To implement the aforementioned jammers we followed the following methodology
 4. Set the start frequency to 2400MHz and Stop frequency to 2500MHz.
 5. Open the terminal and navigate to the working directory.
 6. Run the proactive_jammers.sh script.
+
+![Connected SDRs](setup.PNG)
+
+### Output
+The figure below shows the output of the spectrum analyzer when constant jammer is running
+
+![Spectrum Analyzer Output](analyzer_output.png)
