@@ -34,4 +34,4 @@ To implement the aforementioned jammers we followed the following methodology
 ### Output
 The figure below shows the output of the spectrum analyzer when constant jammer is running
 
-![Spectrum Analyzer Output](analyzer_output.png)
+![Spectrum Analyzer Output](analyzer_output1.png)
