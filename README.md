@@ -14,14 +14,14 @@ The previous two jammers are not energy efficient as they continously radiate ra
 
 ## Implementation
 To implement the aforementioned jammers we followed the following methodology
-###Requirements
+### Requirements
 1. 2 Hackrf SDRs, one for transmission and the other for reception
 2. [spectrum analyzer GUI for hackrf_sweep](https://github.com/pavsa/hackrf-spectrum-analyzer)
 3. Linux machine
-###Scripts
+### Scripts
 1. proactive_jammers.sh is a bash script created for invoking the python program. In this script, at the start the user is prompted to select one of the 3 jammers. After the selection the script calls the constant_jammer.py file continously.
 2. constant_jammer.py is a python file that is based on osmocom_siggen_nogui python file of the GNU radio apps. This creates a sweeping signal centered at a frequency that changes based on the passed argument by proactive_jammers.sh script.
-###Setup
+### Setup
 1. Connect an SMA cable between the two SMA connectors of the SDRs. This ensures we aren’t going to be jamming nearby networks, and get’s rid of background noise.
 2. Connect the SDRs to a Linux machine.
 3. Startup the spectrum analyzer.
