@@ -190,7 +190,6 @@ def set_gains(power):
 ##################################################################################
 
 def detect():
-    #print("Inside detect function")
     with open("output.bin", mode = 'rb') as file:
         fileContent = file.read()
         samples = np.memmap("output.bin", mode = "r", dtype = np.float32)
@@ -205,14 +204,14 @@ def detect():
 if __name__ == "__main__":
     init_freq = 2.412e9		# Channel 1 Center Frequency
     lst_freq = 2.484e9		# Channel 14 Center Frequency
-    jammer = 2 #int(input("Select Jammer Type (1=constant, 2=sweeping, 3=random channel hopping): "))
-    jamming = 1 #int(input("Select Type of Jamming (1=proative, 2=reactive): "))
-    waveform = 3#int(input("Select Jamming waveform (1=modulated sine, 2=swept sine, 3=gaussian noise): " ))
-    power = 6# int(input("Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm): "))
-    t_jamming = 1#int(input("Enter channel jamming duration in sec: "))
+    jammer = int(input("Select Jammer Type (1=constant, 2=sweeping, 3=random channel hopping): "))
+    jamming = int(input("Select Type of Jamming (1=proative, 2=reactive): "))
+    waveform = int(input("Select Jamming waveform (1=modulated sine, 2=swept sine, 3=gaussian noise): " ))
+    power = int(input("Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm): "))
+    t_jamming = int(input("Enter channel jamming duration in sec: "))
     if jamming == 2:
-        t_sensing = 0.05# int(input("Enter channel sensing Duration in sec: "))
-    ch_dist = int(input("Enter center frequency hopping width in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5			# Channel hopping
+        t_sensing = int(input("Enter channel sensing Duration in sec: "))
+    ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5			# Channel hopping
     n_channels = (lst_freq - init_freq)//ch_dist
     threshold = 0.0002
 
@@ -227,8 +226,7 @@ if __name__ == "__main__":
             # If channel is active then jam it
             if rx_power > threshold:
                 jam(freq, waveform, power, t_jamming)
-            #else:
-                #print(f"no ativity on freq {freq}")
+
         else:
             print("Invalid jamming option selection")
 
@@ -241,16 +239,11 @@ if __name__ == "__main__":
                 jam(freq, waveform, power, t_jamming)
             elif jamming == 2:
                 # Sensing Channel
-                #print("I will call sense now")
                 sense(freq, t_sensing)
-                #print("I will get rx_power now")
                 rx_power = detect()
-                #print(f"received power is {rx_power}")
-    			# If channel is active then jam it
+                # If channel is active then jam it
                 if rx_power > threshold:
                     jam(freq, waveform, power, t_jamming)
-                #else:
-                    #print(f"no ativity on freq {freq}")
             else:
                 print("Invalid jamming option selection")
             # Go to next channel
@@ -270,8 +263,6 @@ if __name__ == "__main__":
     			# If channel is active then jam it
                 if rx_power > threshold:
                     jam(freq, waveform, power, t_jamming)
-                #else:
-                    #print(f"no ativity on freq {freq}")
             else:
                 print("Invalid jamming option selection")
     else:
