@@ -1,0 +1,97 @@
+{
+	"start":	{
+		"connected":	[{
+				"socket":	6,
+				"local_host":	"10.20.15.3",
+				"local_port":	47771,
+				"remote_host":	"10.20.15.2",
+				"remote_port":	5201
+			}],
+		"version":	"iperf 3.7",
+		"system_info":	"Linux node2 5.8.0-1006-raspi #9-Ubuntu SMP PREEMPT Fri Oct 16 12:55:30 UTC 2020 aarch64",
+		"timestamp":	{
+			"time":	"Sun, 08 Aug 2021 10:04:03 GMT",
+			"timesecs":	1628417043
+		},
+		"connecting_to":	{
+			"host":	"10.20.15.2",
+			"port":	5201
+		},
+		"cookie":	"otehumlvq6tp44vba52t2wbuofznmj5o7fhy",
+		"sock_bufsize":	0,
+		"sndbuf_actual":	212992,
+		"rcvbuf_actual":	212992,
+		"test_start":	{
+			"protocol":	"UDP",
+			"num_streams":	1,
+			"blksize":	1448,
+			"omit":	0,
+			"duration":	5,
+			"bytes":	0,
+			"blocks":	0,
+			"reverse":	0,
+			"tos":	0
+		}
+	},
+	"intervals":	[{
+			"streams":	[{
+					"socket":	6,
+					"start":	0,
+					"end":	5.000102,
+					"seconds":	5.0001020431518555,
+					"bytes":	31777808,
+					"bits_per_second":	50843455.154716961,
+					"packets":	21946,
+					"omitted":	false,
+					"sender":	true
+				}],
+			"sum":	{
+				"start":	0,
+				"end":	5.000102,
+				"seconds":	5.0001020431518555,
+				"bytes":	31777808,
+				"bits_per_second":	50843455.154716961,
+				"packets":	21946,
+				"omitted":	false,
+				"sender":	true
+			}
+		}],
+	"end":	{
+		"streams":	[{
+				"udp":	{
+					"socket":	6,
+					"start":	0,
+					"end":	5.000102,
+					"seconds":	5.000102,
+					"bytes":	31777808,
+					"bits_per_second":	50843455.593505889,
+					"jitter_ms":	0.10817037710534264,
+					"lost_packets":	21,
+					"packets":	21946,
+					"lost_percent":	0.095689419484188465,
+					"out_of_order":	0,
+					"sender":	true
+				}
+			}],
+		"sum":	{
+			"start":	0,
+			"end":	5.002329,
+			"seconds":	5.002329,
+			"bytes":	31777808,
+			"bits_per_second":	50843455.593505889,
+			"jitter_ms":	0.10817037710534264,
+			"lost_packets":	21,
+			"packets":	21946,
+			"lost_percent":	0.095689419484188465,
+			"sender":	true
+		},
+		"cpu_utilization_percent":	{
+			"host_total":	30.486578032552803,
+			"host_user":	2.0909934641097361,
+			"host_system":	28.395504662699878,
+			"remote_total":	20.172051660543083,
+			"remote_user":	1.5903048982961461,
+			"remote_system":	18.581806556387669
+		}
+	}
+}
