@@ -100,9 +100,11 @@ class Jammer(HackRF):
         throttle = blocks.throttle(gr.sizeof_gr_complex*1, self.samp_rate,True)
 
         if self.waveform == 'swept_sine' or self.waveform == '2':
-            tb.connect(source,throttle, freq_mod, osmosdr_sink)
+            tb.connect(source,freq_mod)
+            tb.connect(freq_mod, throttle, osmosdr_sink)
         else:
-            tb.connect(source, throttle, osmosdr_sink)
+            tb.connect(source, throttle)
+            tb.connect(throttle, osmosdr_sink)
 
         tb.start()
         time.sleep(self.t_jamming)

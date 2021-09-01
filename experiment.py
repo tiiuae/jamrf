@@ -52,28 +52,28 @@ def main():
     #             sweeping(jamming_types[1], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
 
     # Experiment 4: PRR vs Duration for Proactive jammers
-    for jammer in jammers[2:3]:
-        for t_jamming in t_jamming_vals[3:4]:
-            for run in range(n_runs):
-                waveform = waveforms[1]
-                power = 6
-                ch_dist = 20*10e5
-                if jammer == 'sweeping':
-                    sweeping(jamming_types[0], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
-                elif jammer == 'hopping':
-                    hopping(jamming_types[0], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
-
-    # # Experiment 5: PRR vs t_jamming for Reactive jammers
-    # for jammer in jammers:
-    #     for t_jamming in t_jamming_vals:
+    # for jammer in jammers[2:3]:
+    #     for t_jamming in t_jamming_vals[3:4]:
     #         for run in range(n_runs):
     #             waveform = waveforms[1]
     #             power = 6
     #             ch_dist = 20*10e5
     #             if jammer == 'sweeping':
-    #                 sweeping(jamming_types[1], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
-    #             elif jammer = 'hopping':
-    #                 hopping(jamming_types[1], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
+    #                 sweeping(jamming_types[0], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
+    #             elif jammer == 'hopping':
+    #                 hopping(jamming_types[0], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
+
+    # Experiment 5: PRR vs t_jamming for Reactive jammers
+    for jammer in jammers[1:3]:
+        for t_jamming in t_jamming_vals[0:1]:
+            for run in range(n_runs-4):
+                waveform = waveforms[1]
+                power = 6
+                ch_dist = 20*10e5
+                if jammer == 'sweeping':
+                    sweeping(jamming_types[1], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
+                elif jammer == 'hopping':
+                    hopping(jamming_types[1], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
 
 if __name__ == '__main__':
     main()
