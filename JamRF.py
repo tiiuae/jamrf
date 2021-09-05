@@ -169,21 +169,18 @@ class Sensor(HackRF):
         p = 0.5 * mean(samples)
         return p
 
-def jamming(jamming_type, my_Jammer, freq):
+def jamming(jamming_type, my_Jammer, freq, memory):
+    flag = 0
     if jamming_type == 'proactive' or jamming_type == '1':
         my_Jammer.jam(freq)
-        flag = 0
     elif jamming_type == 'reactive' or jamming_type == '2':
-        memory = input("Enable memory feature (yes|no): ").lower()
-        if memory == 'no' or memory == 'n':
-            flag = 0
         my_Sensor = Sensor()
         my_Sensor.sense(freq)
         rx_power = my_Sensor.detect()
         if rx_power > my_Sensor.threshold:
             my_Jammer.jam(freq)
-            flag = 1
-        return flag
+            flag = 1 if memory == 'yes' or memory == 'y'
+    return flag
 
 def constant(jamming_type, duration, waveform, power, t_jamming, freq):
     my_Jammer = Jammer(waveform, power, t_jamming)
@@ -197,11 +194,12 @@ def constant(jamming_type, duration, waveform, power, t_jamming, freq):
 def sweeping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist):
     channel = 1
     n_channels = (lst_freq - init_freq)//ch_dist
+    memory = enable_memory(jamming_type)
     start_time = time.time()
     while True:
         my_Jammer = Jammer(waveform, power, t_jamming)
         freq = my_Jammer.set_frequency(init_freq, channel, ch_dist)
-        m_flag = jamming(jamming_type, my_Jammer, freq)
+        m_flag = run_jamming(jamming_type, my_Jammer, freq, memory)
         if m_flag == 0:
             channel = 1 if channel > n_channels else channel + 1
         else:
@@ -213,13 +211,27 @@ def sweeping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_
 def hopping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist):
     channel = randint(1, n_channels + 1)
     n_channels = (lst_freq - init_freq)//ch_dist
+    memory = enable_memory(jamming_type)
     start_time = time.time()
     while True:
         my_Jammer = Jammer(waveform, power, t_jamming)
         freq = my_Jammer.set_frequency(init_freq, channel, ch_dist)
-        m_flag = jamming(jamming_type, my_Jammer, freq)
+        m_flag = run_jamming(jamming_type, my_Jammer, freq, memory)
         if m_flag == 0:
             channel = randint(1, n_channels + 1)
         jamming_time_per_exp = time.time() - start_time
         if jamming_time_per_exp >= duration:
             break
+            
+def enable_memory(jamming_type):
+    if jamming_type == 'reactive' or jamming_type == '2':
+        memory = input('Enable memory feature (yes|no): ')
+    else:
+        memory = 'no'
+    return memory
+
+def run_jamming(jamming_type, my_Jammer, freq, memory):
+    if memory == 'yes' or memory == 'y':
+        m_flag = jamming(jamming_type, my_Jammer, freq, memory)
+    else:
+        m_flag = jamming(jamming_type, my_Jammer, freq)
