@@ -64,9 +64,9 @@ def main():
     #                 hopping(jamming_types[0], duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist)
 
     # Experiment 5: PRR vs t_jamming for Reactive jammers
-    for jammer in jammers[1:3]:
-        for t_jamming in t_jamming_vals[0:1]:
-            for run in range(n_runs-4):
+    for jammer in jammers[2:3]:
+        for t_jamming in t_jamming_vals[3:4]:
+            for run in range(n_runs-3):
                 waveform = waveforms[1]
                 power = 6
                 ch_dist = 20*10e5

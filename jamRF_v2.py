@@ -19,10 +19,14 @@ def main():
     t_jamming = int(input("Enter channel jamming duration in sec: "))
     duration = int(input("Enter Jammer Active duration in sec: "))
     if jammer != 'constant' and jammer != '1':
+        band = int(input("Select Frequency Band (1=2.4GHz, 2=5GHz)"))
         ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5			# Channel hopping
-        init_freq = 2412e6
-        lst_freq = 2484e6
-
+        if band == 1:
+            init_freq = 2412e6
+            lst_freq = 2484e6
+        else:
+            init_freq = 5150e6
+            lst_freq = 5850e6
 
     if jammer == 'constant' or jammer == '1':
         freq = int(input("Enter the frequency to Jam in MHz: ")) * 10e5

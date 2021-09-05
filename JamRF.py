@@ -172,13 +172,18 @@ class Sensor(HackRF):
 def jamming(jamming_type, my_Jammer, freq):
     if jamming_type == 'proactive' or jamming_type == '1':
         my_Jammer.jam(freq)
+        flag = 0
     elif jamming_type == 'reactive' or jamming_type == '2':
+        memory = input("Enable memory feature (yes|no): ").lower()
+        if memory == 'no' or memory == 'n':
+            flag = 0
         my_Sensor = Sensor()
         my_Sensor.sense(freq)
         rx_power = my_Sensor.detect()
-        print(f"the received power is {rx_power}")
         if rx_power > my_Sensor.threshold:
             my_Jammer.jam(freq)
+            flag = 1
+        return flag
 
 def constant(jamming_type, duration, waveform, power, t_jamming, freq):
     my_Jammer = Jammer(waveform, power, t_jamming)
@@ -196,20 +201,25 @@ def sweeping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_
     while True:
         my_Jammer = Jammer(waveform, power, t_jamming)
         freq = my_Jammer.set_frequency(init_freq, channel, ch_dist)
-        jamming(jamming_type, my_Jammer, freq)
-        channel = 1 if channel > n_channels else channel + 1
+        m_flag = jamming(jamming_type, my_Jammer, freq)
+        if m_flag == 0:
+            channel = 1 if channel > n_channels else channel + 1
+        else:
+            pass
         jamming_time_per_exp = time.time() - start_time
         if jamming_time_per_exp >= duration:
             break
 
 def hopping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist):
+    channel = randint(1, n_channels + 1)
     n_channels = (lst_freq - init_freq)//ch_dist
     start_time = time.time()
     while True:
-        channel = randint(1, n_channels + 1)
         my_Jammer = Jammer(waveform, power, t_jamming)
         freq = my_Jammer.set_frequency(init_freq, channel, ch_dist)
-        jamming(jamming_type, my_Jammer, freq)
+        m_flag = jamming(jamming_type, my_Jammer, freq)
+        if m_flag == 0:
+            channel = randint(1, n_channels + 1)
         jamming_time_per_exp = time.time() - start_time
         if jamming_time_per_exp >= duration:
             break
