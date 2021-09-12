@@ -183,9 +183,11 @@ def jamming(jamming_type, my_Jammer, freq, memory):
     return flag
 
 def constant(jamming_type, duration, waveform, power, t_jamming, freq):
-    my_Jammer = Jammer(waveform, power, t_jamming)
+    t_j, t_s = enable_sleeping(t_jamming)
+    my_Jammer = Jammer(waveform, power, t_j)
     start_time = time.time()
     jamming(jamming_type, my_Jammer, freq)
+    time.sleep(t_s)
     jamming_time_per_exp = time.time() - start_time
     time_rem = duration - jamming_time_per_exp
     if time_rem > 0:
@@ -195,32 +197,36 @@ def sweeping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_
     channel = 1
     n_channels = (lst_freq - init_freq)//ch_dist
     memory = enable_memory(jamming_type)
+    t_j, t_s = enable_sleeping(t_jamming)
     start_time = time.time()
     while True:
-        my_Jammer = Jammer(waveform, power, t_jamming)
+        my_Jammer = Jammer(waveform, power, t_j)
         freq = my_Jammer.set_frequency(init_freq, channel, ch_dist)
         m_flag = run_jamming(jamming_type, my_Jammer, freq, memory)
+        time.sleep(t_s)
         if m_flag == 0:
             channel = 1 if channel > n_channels else channel + 1
         else:
             pass
-        jamming_time_per_exp = time.time() - start_time
-        if jamming_time_per_exp >= duration:
+        jamming_time_per_run = time.time() - start_time
+        if jamming_time_per_run >= duration:
             break
 
 def hopping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist):
     n_channels = (lst_freq - init_freq)//ch_dist
     channel = randint(1, n_channels + 1)
     memory = enable_memory(jamming_type)
+    t_j, t_s = enable_sleeping(t_jamming)
     start_time = time.time()
     while True:
-        my_Jammer = Jammer(waveform, power, t_jamming)
+        my_Jammer = Jammer(waveform, power, t_j)
         freq = my_Jammer.set_frequency(init_freq, channel, ch_dist)
         m_flag = run_jamming(jamming_type, my_Jammer, freq, memory)
+        time.sleep(t_s)
         if m_flag == 0:
             channel = randint(1, n_channels + 1)
-        jamming_time_per_exp = time.time() - start_time
-        if jamming_time_per_exp >= duration:
+        jamming_time_per_run = time.time() - start_time
+        if jamming_time_per_run >= duration:
             break
 
 def enable_memory(jamming_type):
@@ -236,3 +242,14 @@ def run_jamming(jamming_type, my_Jammer, freq, memory):
     else:
         m_flag = jamming(jamming_type, my_Jammer, freq)
     return m_flag
+
+def enable_sleeping(t_jamming):
+    sleeping = input('Enable sleeping feature (yes|no): ').lower()
+    if sleeping == 'yes' or sleeping == 'y':
+        duty_cycle = int(input("Enter duty cycle in %: "))
+        t_j = t_jamming*duty_cycle/100
+        t_s = t_jamming - t_j
+    else:
+        t_j = t_jamming
+        t_s = 0
+    return t_j, t_s

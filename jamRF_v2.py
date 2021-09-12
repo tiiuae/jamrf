@@ -17,7 +17,10 @@ def main():
     waveform = input("Select Jamming waveform (1|mod_sine, 2|swept_sine, 3|noise): " ).lower()
     power = int(input("Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm): "))
     t_jamming = int(input("Enter channel jamming duration in sec: "))
-    duration = int(input("Enter Jammer Active duration in sec: "))
+    duration = int(input("Enter total runtime duration in sec: "))
+    if t_jamming > duration:
+        t_jamming = duration
+
     if jammer != 'constant' and jammer != '1':
         band = int(input("Select Frequency Band (1=2.4GHz, 2=5GHz)"))
         if band == 1:
