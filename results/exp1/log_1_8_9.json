@@ -1,0 +1,23 @@
+{
+	"start":	{
+		"connected":	[],
+		"version":	"iperf 3.7",
+		"system_info":	"Linux node2 5.8.0-1006-raspi #9-Ubuntu SMP PREEMPT Fri Oct 16 12:55:30 UTC 2020 aarch64",
+		"timestamp":	{
+			"time":	"Sun, 08 Aug 2021 11:14:56 GMT",
+			"timesecs":	1628421296
+		},
+		"connecting_to":	{
+			"host":	"10.20.15.2",
+			"port":	5201
+		},
+		"cookie":	"7fgyonwr6u4sqbsi3zs3zthf5kswnygut57a",
+		"sock_bufsize":	0,
+		"sndbuf_actual":	212992,
+		"rcvbuf_actual":	212992
+	},
+	"intervals":	[],
+	"end":	{
+	},
+	"error":	"error - unable to read from stream socket: Resource temporarily unavailable"
+}

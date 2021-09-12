@@ -209,8 +209,8 @@ def sweeping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_
             break
 
 def hopping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_freq, ch_dist):
-    channel = randint(1, n_channels + 1)
     n_channels = (lst_freq - init_freq)//ch_dist
+    channel = randint(1, n_channels + 1)
     memory = enable_memory(jamming_type)
     start_time = time.time()
     while True:
@@ -222,7 +222,7 @@ def hopping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_f
         jamming_time_per_exp = time.time() - start_time
         if jamming_time_per_exp >= duration:
             break
-            
+
 def enable_memory(jamming_type):
     if jamming_type == 'reactive' or jamming_type == '2':
         memory = input('Enable memory feature (yes|no): ')
@@ -235,3 +235,4 @@ def run_jamming(jamming_type, my_Jammer, freq, memory):
         m_flag = jamming(jamming_type, my_Jammer, freq, memory)
     else:
         m_flag = jamming(jamming_type, my_Jammer, freq)
+    return m_flag

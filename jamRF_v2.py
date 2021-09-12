@@ -20,13 +20,31 @@ def main():
     duration = int(input("Enter Jammer Active duration in sec: "))
     if jammer != 'constant' and jammer != '1':
         band = int(input("Select Frequency Band (1=2.4GHz, 2=5GHz)"))
-        ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5			# Channel hopping
         if band == 1:
+            ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5
             init_freq = 2412e6
             lst_freq = 2484e6
+        elif band == 2:
+            ch_dist = 20e6
+            allocation = int(input("Select channel allocation (1=UNII-1, 2=UNII-2a, 3=UNII-2c, 4=UNII-3)"))
+            if allocation == 1:
+                init_freq = 5180e6
+                lst_freq = 5240e6
+            elif allocation == 2:
+                init_freq = 5260e6
+                lst_freq = 5320e6
+            elif allocation == 3:
+                init_freq = 5500e6
+                lst_freq = 5720e6
+            elif allocation == 4:
+                init_freq = 5745e6
+                lst_freq = 5825e6
+            else:
+                print('Invalid selection')
         else:
-            init_freq = 5150e6
-            lst_freq = 5850e6
+            print('Invalid selection')
+    else:
+        pass
 
     if jammer == 'constant' or jammer == '1':
         freq = int(input("Enter the frequency to Jam in MHz: ")) * 10e5

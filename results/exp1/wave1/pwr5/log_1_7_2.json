@@ -1,0 +1,76 @@
+{
+	"start":	{
+		"connected":	[{
+				"socket":	6,
+				"local_host":	"10.20.15.3",
+				"local_port":	42580,
+				"remote_host":	"10.20.15.2",
+				"remote_port":	5201
+			}],
+		"version":	"iperf 3.7",
+		"system_info":	"Linux node2 5.8.0-1006-raspi #9-Ubuntu SMP PREEMPT Fri Oct 16 12:55:30 UTC 2020 aarch64",
+		"timestamp":	{
+			"time":	"Sun, 08 Aug 2021 10:00:46 GMT",
+			"timesecs":	1628416846
+		},
+		"connecting_to":	{
+			"host":	"10.20.15.2",
+			"port":	5201
+		},
+		"cookie":	"zo6q7ilstzkfsn3gcbtncnh4tc6oceb5mjqi",
+		"sock_bufsize":	0,
+		"sndbuf_actual":	212992,
+		"rcvbuf_actual":	212992,
+		"test_start":	{
+			"protocol":	"UDP",
+			"num_streams":	1,
+			"blksize":	1448,
+			"omit":	0,
+			"duration":	30,
+			"bytes":	0,
+			"blocks":	0,
+			"reverse":	0,
+			"tos":	0
+		}
+	},
+	"intervals":	[],
+	"end":	{
+		"streams":	[{
+				"udp":	{
+					"socket":	6,
+					"start":	0,
+					"end":	6735.449235,
+					"seconds":	6735.449235,
+					"bytes":	14491584,
+					"bits_per_second":	17212.314718010046,
+					"jitter_ms":	0,
+					"lost_packets":	0,
+					"packets":	10008,
+					"lost_percent":	0,
+					"out_of_order":	0,
+					"sender":	true
+				}
+			}],
+		"sum":	{
+			"start":	0,
+			"end":	6735.449235,
+			"seconds":	6735.449235,
+			"bytes":	14491584,
+			"bits_per_second":	17212.314718010046,
+			"jitter_ms":	0,
+			"lost_packets":	0,
+			"packets":	10008,
+			"lost_percent":	0,
+			"sender":	true
+		},
+		"cpu_utilization_percent":	{
+			"host_total":	24.585833657151841,
+			"host_user":	2.9669067373035953,
+			"host_system":	21.620558371870207,
+			"remote_total":	0,
+			"remote_user":	0,
+			"remote_system":	0
+		}
+	},
+	"error":	"error - the server has terminated"
+}
