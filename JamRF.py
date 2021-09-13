@@ -183,7 +183,7 @@ def jamming(jamming_type, my_Jammer, freq, memory):
     return flag
 
 def constant(jamming_type, duration, waveform, power, t_jamming, freq):
-    t_j, t_s = enable_sleeping(t_jamming)
+    t_j, t_s = enable_energy_savings(t_jamming)
     my_Jammer = Jammer(waveform, power, t_j)
     start_time = time.time()
     jamming(jamming_type, my_Jammer, freq)
@@ -197,7 +197,7 @@ def sweeping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_
     channel = 1
     n_channels = (lst_freq - init_freq)//ch_dist
     memory = enable_memory(jamming_type)
-    t_j, t_s = enable_sleeping(t_jamming)
+    t_j, t_s = enable_energy_savings(t_jamming)
     start_time = time.time()
     while True:
         my_Jammer = Jammer(waveform, power, t_j)
@@ -216,7 +216,7 @@ def hopping(jamming_type, duration, waveform, power, t_jamming, init_freq, lst_f
     n_channels = (lst_freq - init_freq)//ch_dist
     channel = randint(1, n_channels + 1)
     memory = enable_memory(jamming_type)
-    t_j, t_s = enable_sleeping(t_jamming)
+    t_j, t_s = enable_energy_savings(t_jamming)
     start_time = time.time()
     while True:
         my_Jammer = Jammer(waveform, power, t_j)
@@ -243,9 +243,9 @@ def run_jamming(jamming_type, my_Jammer, freq, memory):
         m_flag = jamming(jamming_type, my_Jammer, freq)
     return m_flag
 
-def enable_sleeping(t_jamming):
-    sleeping = input('Enable sleeping feature (yes|no): ').lower()
-    if sleeping == 'yes' or sleeping == 'y':
+def enable_energy_savings(t_jamming):
+    savings = input('Enable energy savings feature (yes|no): ').lower()
+    if savings == 'yes' or sleeping == 'y':
         duty_cycle = int(input("Enter duty cycle in %: "))
         t_j = t_jamming*duty_cycle/100
         t_s = t_jamming - t_j
