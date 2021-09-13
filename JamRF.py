@@ -169,7 +169,7 @@ class Sensor(HackRF):
         p = 0.5 * mean(samples)
         return p
 
-def jamming(jamming_type, my_Jammer, freq, memory):
+def jamming(jamming_type, my_Jammer, freq, memory='n'):
     flag = 0
     if jamming_type == 'proactive' or jamming_type == '1':
         my_Jammer.jam(freq)
