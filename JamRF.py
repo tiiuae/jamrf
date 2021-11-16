@@ -17,6 +17,7 @@ import time
 from gnuradio import gr
 from gnuradio import blocks
 from gnuradio import analog
+from gnuradio import digital
 from gnuradio import audio
 from gnuradio import fft
 from gnuradio.fft import window
@@ -52,6 +53,8 @@ class Jammer(HackRF):
         self.waveform = waveform
         self.power = power
         self.t_jamming = t_jamming
+        self.qpsk_const = qpsk_const = digital.constellation_rect([-1-1j, -1+1j, 1+1j, 1-1j], [0, 1, 3, 2],
+        4, 2, 2, 1, 1).base()
 
     def set_gains(self):
         if self.power >= -40 and self.power <= 5:
@@ -75,16 +78,17 @@ class Jammer(HackRF):
 
         tb = gr.top_block()
 
-        if self.waveform == 'mod_sine' or self.waveform == '1':
+        if self.waveform == 'single_tone' or self.waveform == '1':
             source = analog.sig_source_c(self.samp_rate, analog.GR_SIN_WAVE, 1000, 1, 0, 0)
-        elif self.waveform == 'swept_sine' or self.waveform == '2':
-            source = analog.sig_source_f(self.samp_rate, analog.GR_SIN_WAVE, 1000, 1, 0, 0)
+        elif self.waveform == 'QPSK_mod' or self.waveform == '2':
+            #source = analog.sig_source_f(self.samp_rate, analog.GR_SIN_WAVE, 1000, 1, 0, 0)
+            source = blocks.vector_source_b(list(map(int, numpy.random.randint(0, 255, 1000))), True)
         elif self.waveform == 'noise' or self.waveform == '3':
             source = analog.noise_source_c(analog.GR_GAUSSIAN, 1, 0.5)
         else:
             print("invalid selection")
 
-        freq_mod = analog.frequency_modulator_fc(1)
+        #freq_mod = analog.frequency_modulator_fc(1)
         osmosdr_sink = osmosdr.sink(
             args="numchan=" + str(1) + " " + ""
         )
@@ -98,10 +102,20 @@ class Jammer(HackRF):
         osmosdr_sink.set_antenna('', 0)
         osmosdr_sink.set_bandwidth(self.sdr_bandwidth, 0)
         throttle = blocks.throttle(gr.sizeof_gr_complex*1, self.samp_rate,True)
+        digital_constellation_modulator = digital.generic_mod(
+            constellation=qpsk_const,
+            differential=True,
+            samples_per_symbol=4,
+            pre_diff_code=True,
+            excess_bw=0.035,
+            verbose=False,
+            log=False)
 
-        if self.waveform == 'swept_sine' or self.waveform == '2':
-            tb.connect(source,freq_mod)
-            tb.connect(freq_mod, throttle, osmosdr_sink)
+        if self.waveform == 'QPSK_mod' or self.waveform == '2':
+            #tb.connect(source,freq_mod)
+            #tb.connect(freq_mod, throttle, osmosdr_sink)
+            tb.connect(source, digital_constellation_modulator)
+            tb.connect(digital_constellation_modulator, throttle, osmosdr_sink)
         else:
             tb.connect(source, throttle)
             tb.connect(throttle, osmosdr_sink)

@@ -18,7 +18,7 @@ def main():
     """
     jamming_types = ['proactive', 'reactive']
     jammers = ['constant', 'sweeping', 'hopping']
-    waveforms = ['mod_sine', 'swept_sine', 'noise']
+    waveforms = ['single_tone', 'QPSK_mod', 'noise']
     power_vals = list(range(-4,15,2))
     t_jamming_vals = [5,10,15,20]
     ch_dists = [ch_dist*10e5 for ch_dist in range(5,25,5)]

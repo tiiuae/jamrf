@@ -14,7 +14,7 @@ from JamRF import constant, sweeping, hopping
 def main():
     jamming_type = input("Select Type of Jamming (1|proative, 2|reactive): ").lower()
     jammer = input("Select Jammer Type (1|constant, 2|sweeping, 3|hopping): ").lower()
-    waveform = input("Select Jamming waveform (1|mod_sine, 2|swept_sine, 3|noise): " ).lower()
+    waveform = input("Select Jamming waveform (1|single_tone, 2|QPSK_mod, 3|noise): " ).lower()
     power = int(input("Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm): "))
     t_jamming = int(input("Enter channel jamming duration in sec: "))
     duration = int(input("Enter total runtime duration in sec: "))
