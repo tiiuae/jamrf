@@ -193,7 +193,10 @@ def jamming(jamming_type, my_Jammer, freq, memory='n'):
         rx_power = my_Sensor.detect()
         if rx_power > my_Sensor.threshold:
             my_Jammer.jam(freq)
-            flag = 1 if memory == 'yes' or memory == 'y'
+            if memory == 'yes' or memory == 'y':
+                flag = 1
+            else:
+                flag = 0
     return flag
 
 def constant(jamming_type, duration, waveform, power, t_jamming, freq):
