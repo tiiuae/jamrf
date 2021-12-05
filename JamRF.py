@@ -82,7 +82,7 @@ class Jammer(HackRF):
             source = analog.sig_source_c(self.samp_rate, analog.GR_SIN_WAVE, 1000, 1, 0, 0)
         elif self.waveform == 'QPSK_mod' or self.waveform == '2':
             #source = analog.sig_source_f(self.samp_rate, analog.GR_SIN_WAVE, 1000, 1, 0, 0)
-            source = blocks.vector_source_b(list(map(int, numpy.random.randint(0, 255, 1000))), True)
+            source = blocks.vector_source_b(list(map(int, np.random.randint(0, 255, 1000))), True)
         elif self.waveform == 'noise' or self.waveform == '3':
             source = analog.noise_source_c(analog.GR_GAUSSIAN, 1, 0.5)
         else:
@@ -262,7 +262,7 @@ def run_jamming(jamming_type, my_Jammer, freq, memory):
 
 def enable_energy_savings(t_jamming):
     savings = input('Enable energy savings feature (yes|no): ').lower()
-    if savings == 'yes' or sleeping == 'y':
+    if savings == 'yes' or savings == 'y':
         duty_cycle = int(input("Enter duty cycle in %: "))
         t_j = t_jamming*duty_cycle/100
         t_s = t_jamming - t_j
