@@ -1,0 +1,21 @@
+---
+ # The options below are applicable to all jammer types
+ # Select Jammer Type (1=constant, 2=sweeping, 3=random channel hopping) | default = 1
+ jammer: 1
+ # Select Type of Jamming (1=proative, 2=reactive) | default = 1
+ jamming: 1
+ # Select Jamming waveform (1=single tone, 2=swept sine, 3=gaussian noise) | default = 3
+ waveform: 3
+ # Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm) | default = 6dBm
+ power: 6
+ # Enter channel jamming duration in sec | default = 10s
+ t_jamming: 10
+ 
+ # The options below are optional depending on the jammer of choice
+ # Enter total runtime duration in sec | default = 200s
+ duration: 200 # This option doesn't apply to constant jammer
+ # Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz) | default = 20MHz
+ ch_dist: 20 # This option doesn't apply to constant jammer
+ # Enter the frequency to Jam in MHz | default = 2462MHz
+ freq: 2462 # This option only applies to constant jammer
+ 

@@ -99,10 +99,10 @@ def jam(freq, waveform, power, delay=1):
     ###############################################################################
     # Variables
     ###############################################################################
-
+    print(f"\nThe frequency currently jammed is: {freq/(10e5)}MHz")
     samp_rate = 20e6		            # Sample Rate
     sdr_bandwidth = 20e6	            # Hackrf SDR Bandwidth
-    RF_gain, IF_gain = set_gains(power)	# Hackrf SDR antenna gain
+    RF_gain, IF_gain = set_gains(power)    # Hackrf SDR antenna gain
 
     tb = gr.top_block()
 
@@ -161,7 +161,6 @@ def set_frequency(channel, ch_dist):
     else:
         freq = init_freq + (channel - 1) * ch_dist
 
-    print(f"the freq is: {freq}")
     return freq
 
 ##################################################################################
@@ -202,27 +201,36 @@ def detect():
 ##################################################################################
 
 if __name__ == "__main__":
-    init_freq = 2.412e9		# Channel 1 Center Frequency
-    lst_freq = 2.484e9		# Channel 14 Center Frequency
+    # Global options
     jammer = int(input("Select Jammer Type (1=constant, 2=sweeping, 3=random channel hopping): "))
     jamming = int(input("Select Type of Jamming (1=proative, 2=reactive): "))
-    waveform = int(input("Select Jamming waveform (1=modulated sine, 2=swept sine, 3=gaussian noise): " ))
+    waveform = int(input("Select Jamming waveform (1=single-tone, 2=swept sine, 3=gaussian noise): " ))
     power = int(input("Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm): "))
     t_jamming = int(input("Enter channel jamming duration in sec: "))
+    
+    # Special options
+    if jammer != 1:
+        init_freq = 2.412e9	# Channel 1 Center Frequency
+        lst_freq = 2.484e9	# Channel 14 Center Frequency
+        ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5
+        n_channels = (lst_freq - init_freq)//ch_dist
+        duration = int(input("Enter total runtime duration in sec: "))
+        if t_jamming > duration:
+            t_jamming = duration
     if jamming == 2:
-        t_sensing = int(input("Enter channel sensing Duration in sec: "))
-    ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5			# Channel hopping
-    n_channels = (lst_freq - init_freq)//ch_dist
-    threshold = 0.0002
-
+        t_sensing = 0.05
+        threshold = 0.0002
+    
+    # Starting RF Jamming
     if jammer == 1:
+        freq = int(input("Enter the frequency to Jam in MHz: ")) * 10e5
         if jamming == 1:
-            freq = int(input("Enter the frequency to Jam in MHz: ")) * 10e5
             jam(freq, waveform, power, t_jamming)
         elif jamming == 2:
             # Sensing Channel
             sense(freq, t_sensing)
             rx_power = detect()
+            print(rx_power)
             # If channel is active then jam it
             if rx_power > threshold:
                 jam(freq, waveform, power, t_jamming)
@@ -232,6 +240,7 @@ if __name__ == "__main__":
 
     elif jammer == 2:
         channel = 1         # Initial Channel @ 2.412GHz
+        start_time = time.time()
         while True:
             freq = set_frequency(channel, ch_dist)
             if jamming == 1:
@@ -248,8 +257,13 @@ if __name__ == "__main__":
                 print("Invalid jamming option selection")
             # Go to next channel
             channel = 1 if channel > n_channels else channel + 1
+            # Checking elapsed time
+            jamming_time_per_run = time.time() - start_time
+            if jamming_time_per_run >= duration:
+                break
 
     elif jammer == 3:
+        start_time = time.time()
         while True:
             channel = randint(1, n_channels + 1)
             freq = set_frequency(channel, ch_dist)
@@ -264,6 +278,11 @@ if __name__ == "__main__":
                 if rx_power > threshold:
                     jam(freq, waveform, power, t_jamming)
             else:
-                print("Invalid jamming option selection")
+                print("Invalid jamming option selection")    
+            # Checking elapsed time
+            jamming_time_per_run = time.time() - start_time
+            if jamming_time_per_run >= duration:
+                break
+                
     else:
         print("invalid jammer selection")
