@@ -25,21 +25,22 @@ To implement the aforementioned jammers we followed the following methodology
 1. 2 Hackrf SDRs, one for transmission and the other for reception
 2. [spectrum analyzer GUI for hackrf_sweep](https://github.com/pavsa/hackrf-spectrum-analyzer)
 3. Linux machine
-4. 2 Raspberry Pis
-5. Iperf3 network tool
-6. Isolation chamber
+
 ### Scripts
-JamRF.py is a python script that implements the aforementioned jammers. In this script, at the start the user is prompted to input jamming options accordingly.
-### Setup
+Use jamRF_v1.py for a simplistic demonstration and for a more advanced demonstration, use jamRF_v2.py. These python scripts implement the aforementioned jammers. 
+### Setup and Usage
 1. Connect an SMA cable to a hackrf using the isolation chamber I/O ports.
 2. Connect the SDRs to a Linux machine.
 3. Startup the spectrum analyzer.
 4. Set the start frequency to 2400MHz and Stop frequency to 2500MHz.
-5. Connect the 2 Raspberry Pis to power outlet inside the isolation chamber.
-6. Start iperf3 application
-7. Run the JamRF.py script.
+5. Open config_v1.yaml to configure the parameter settings for the jamRF_v1.py or config_v2.yaml for jamRF_v2.py.
+6. On the terminal, run the jamRF_v1.py or jamRF_v2 script.
+'''
+python3 jamRF_v1.py
+''' 
 
 ![Connected SDRs](setup.PNG)
+
 
 ### Output
 The figure below shows the output of the spectrum analyzer when Proactive sweeping jammer is running
