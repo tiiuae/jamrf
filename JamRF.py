@@ -83,7 +83,7 @@ class Jammer(HackRF):
         elif self.waveform == 'QPSK_mod' or self.waveform == '2':
             #source = analog.sig_source_f(self.samp_rate, analog.GR_SIN_WAVE, 1000, 1, 0, 0)
             source = blocks.vector_source_b(list(map(int, np.random.randint(0, 255, 1000))), True)
-        elif self.waveform == 'noise' or self.waveform == '3':
+        elif self.waveform == 'gaussian_noise' or self.waveform == '3':
             source = analog.noise_source_c(analog.GR_GAUSSIAN, 1, 0.5)
         else:
             print("invalid selection")
