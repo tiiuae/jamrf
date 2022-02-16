@@ -210,9 +210,30 @@ if __name__ == "__main__":
     
     # Special options
     if jammer != 1:
-        init_freq = 2.412e9	# Channel 1 Center Frequency
-        lst_freq = 2.484e9	# Channel 14 Center Frequency
-        ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5
+        band = int(input("Select Frequency Band (1=2.4GHz, 2=5GHz)"))
+        if band == 1:
+            ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5
+            init_freq = 2412e6
+            lst_freq = 2484e6
+        elif band == 2:
+            ch_dist = 20e6
+            allocation = int(input("Select channel allocation (1=UNII-1, 2=UNII-2a, 3=UNII-2c, 4=UNII-3)"))
+            if allocation == 1:
+                init_freq = 5180e6
+                lst_freq = 5240e6
+            elif allocation == 2:
+                init_freq = 5260e6
+                lst_freq = 5320e6
+            elif allocation == 3:
+                init_freq = 5500e6
+                lst_freq = 5720e6
+            elif allocation == 4:
+                init_freq = 5745e6
+                lst_freq = 5825e6
+            else:
+                print('Invalid selection')
+        else:
+            print('Invalid selection')
         n_channels = (lst_freq - init_freq)//ch_dist
         duration = int(input("Enter total runtime duration in sec: "))
         if t_jamming > duration:
