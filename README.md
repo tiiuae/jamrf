@@ -35,9 +35,6 @@ Use jamRF_v1.py for a simplistic demonstration and for a more advanced demonstra
 4. Set the start frequency to 2400MHz and Stop frequency to 2500MHz.
 5. Open config_v1.yaml to configure the parameter settings for the jamRF_v1.py or config_v2.yaml for jamRF_v2.py.
 6. On the terminal, run the jamRF_v1.py or jamRF_v2 script.
-'''
-python3 jamRF_v1.py
-''' 
 
 ![Connected SDRs](setup.PNG)
 
