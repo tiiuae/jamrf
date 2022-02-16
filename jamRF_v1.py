@@ -14,6 +14,7 @@
 ###################################################################################
 
 import time
+import yaml
 from gnuradio import gr
 from gnuradio import blocks
 from gnuradio import analog
@@ -202,22 +203,29 @@ def detect():
 
 if __name__ == "__main__":
     # Global options
-    jammer = int(input("Select Jammer Type (1=constant, 2=sweeping, 3=random channel hopping): "))
-    jamming = int(input("Select Type of Jamming (1=proative, 2=reactive): "))
-    waveform = int(input("Select Jamming waveform (1=single-tone, 2=swept sine, 3=gaussian noise): " ))
-    power = int(input("Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm): "))
-    t_jamming = int(input("Enter channel jamming duration in sec: "))
-    
+    stream = open("config_v1.yaml", 'r')
+    parameters = yaml.load_all(stream)
+
+    for par in parameters:     
+        band = par["band"]
+        jammer = par["jammer"]
+        jamming = par["jamming"]
+        waveform = par["waveform"]
+        power = par["power"]
+        t_jamming = par["t_jamming"]
+        duration = par["duration"]
+        ch_dist = par["ch_dist"]
+        freq = par["freq"]
+        allocation = par["allocation"]
+            
     # Special options
     if jammer != 1:
-        band = int(input("Select Frequency Band (1=2.4GHz, 2=5GHz)"))
         if band == 1:
-            ch_dist = int(input("Enter distance between adjacent channels in MHz (Min = 1MHz, Max = 20MHz): ")) * 10e5
+            ch_dist = ch_dist * 10e5
             init_freq = 2412e6
             lst_freq = 2484e6
         elif band == 2:
             ch_dist = 20e6
-            allocation = int(input("Select channel allocation (1=UNII-1, 2=UNII-2a, 3=UNII-2c, 4=UNII-3)"))
             if allocation == 1:
                 init_freq = 5180e6
                 lst_freq = 5240e6
@@ -235,7 +243,6 @@ if __name__ == "__main__":
         else:
             print('Invalid selection')
         n_channels = (lst_freq - init_freq)//ch_dist
-        duration = int(input("Enter total runtime duration in sec: "))
         if t_jamming > duration:
             t_jamming = duration
     if jamming == 2:
@@ -244,7 +251,7 @@ if __name__ == "__main__":
     
     # Starting RF Jamming
     if jammer == 1:
-        freq = int(input("Enter the frequency to Jam in MHz: ")) * 10e5
+        freq = freq * 10e5
         if jamming == 1:
             jam(freq, waveform, power, t_jamming)
         elif jamming == 2:
