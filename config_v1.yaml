@@ -4,7 +4,7 @@
  band: 1
  # Select Jammer Type (1=constant, 2=sweeping, 3=random channel hopping) | default = 1
  jammer: 1
- # Select Type of Jamming (1=proative, 2=reactive) | default = 1
+ # Select Type of Jamming (1=proactive, 2=reactive) | default = 1
  jamming: 1
  # Select Jamming waveform (1=single tone, 2=swept sine, 3=gaussian noise) | default = 3
  waveform: 3

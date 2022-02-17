@@ -6,7 +6,7 @@
 #
 # GNU Radio Python Flow Graph
 # Title: Not titled yet
-# Author: abubakar
+# Author: Abubakar Sani Ali
 # GNU Radio version: 3.8.1.0
 
 ###################################################################################
@@ -29,18 +29,19 @@ import sys
 import numpy as np
 from random import randint
 
+
 ###################################################################################
 # Sensing Channel Activity Function
 ###################################################################################
 
 def sense(freq, delay):
-    #print("Sense has received the call")
+    # print("Sense has received the call")
     ###############################################################################
     # Variables
     ###############################################################################
 
-    samp_rate = 20e6		# Delay before hopping to the next channel in sec
-    sdr_bandwidth = 20e6	# Hackrf SDR Bandwidth
+    samp_rate = 20e6  # Delay before hopping to the next channel in sec
+    sdr_bandwidth = 20e6  # Hackrf SDR Bandwidth
 
     tb = gr.top_block()
 
@@ -50,7 +51,7 @@ def sense(freq, delay):
 
     # Source block
     osmosdr_source = osmosdr.source(
-            args="numchan=" + str(1) + " " + ""
+        args="numchan=" + str(1) + " " + ""
     )
     osmosdr_source.set_time_unknown_pps(osmosdr.time_spec_t())
     osmosdr_source.set_sample_rate(samp_rate)
@@ -75,7 +76,7 @@ def sense(freq, delay):
     complex_to_mag_squared = blocks.complex_to_mag_squared(1)
 
     # Sink block
-    file_sink = blocks.file_sink(gr.sizeof_float*1, 'output.bin', False)
+    file_sink = blocks.file_sink(gr.sizeof_float * 1, 'output.bin', False)
     file_sink.set_unbuffered(True)
 
     ##############################################################################
@@ -91,19 +92,19 @@ def sense(freq, delay):
     tb.stop()
     tb.wait()
 
+
 ###################################################################################
 # Jamming Channel Function
 ###################################################################################
 
 def jam(freq, waveform, power, delay=1):
-
     ###############################################################################
     # Variables
     ###############################################################################
-    print(f"\nThe frequency currently jammed is: {freq/(10e5)}MHz")
-    samp_rate = 20e6		            # Sample Rate
-    sdr_bandwidth = 20e6	            # Hackrf SDR Bandwidth
-    RF_gain, IF_gain = set_gains(power)    # Hackrf SDR antenna gain
+    print(f"\nThe frequency currently jammed is: {freq / (10e5)}MHz")
+    samp_rate = 20e6  # Sample Rate
+    sdr_bandwidth = 20e6  # Hackrf SDR Bandwidth
+    RF_gain, IF_gain = set_gains(power)  # Hackrf SDR antenna gain
 
     tb = gr.top_block()
 
@@ -152,6 +153,7 @@ def jam(freq, waveform, power, delay=1):
     tb.stop()
     tb.wait()
 
+
 ##################################################################################
 # Set Frequency
 ##################################################################################
@@ -164,18 +166,19 @@ def set_frequency(channel, ch_dist):
 
     return freq
 
+
 ##################################################################################
 # Set RF Gains
 ##################################################################################
 
 def set_gains(power):
-    if power >= -40 and power <= 5:
+    if -40 <= power <= 5:
         RF_gain = 0
         if power < -5:
             IF_gain = power + 40
-        elif power >= -5 and power <= 2:
+        elif -5 <= power <= 2:
             IF_gain = power + 41
-        elif power > 2 and power <= 5:
+        elif 2 < power <= 5:
             IF_gain = power + 42
     elif power > 5:
         RF_gain = 14
@@ -185,17 +188,19 @@ def set_gains(power):
 
     return RF_gain, IF_gain
 
+
 ##################################################################################
 # Detect Activity Function
 ##################################################################################
 
 def detect():
-    with open("output.bin", mode = 'rb') as file:
+    with open("output.bin", mode='rb') as file:
         fileContent = file.read()
-        samples = np.memmap("output.bin", mode = "r", dtype = np.float32)
+        samples = np.memmap("output.bin", mode="r", dtype=np.float32)
 
     p = 0.5 * mean(samples)
     return p
+
 
 ##################################################################################
 # Main Function
@@ -203,21 +208,19 @@ def detect():
 
 if __name__ == "__main__":
     # Global options
-    stream = open("config_v1.yaml", 'r')
-    parameters = yaml.load_all(stream)
+    config_file = open("config_v2.yaml")
+    options = yaml.load(config_file, Loader=yaml.FullLoader)
+    jammer = options.get("jammer")
+    jamming = options.get("jamming")
+    waveform = options.get("waveform")
+    power = options.get("power")
+    band = options.get("band")
+    freq = options.get("freq")
+    ch_dist = options.get("ch_dist")
+    allocation = options.get("allocation")
+    t_jamming = options.get("t_jamming")
+    duration = options.get("duration")
 
-    for par in parameters:     
-        band = par["band"]
-        jammer = par["jammer"]
-        jamming = par["jamming"]
-        waveform = par["waveform"]
-        power = par["power"]
-        t_jamming = par["t_jamming"]
-        duration = par["duration"]
-        ch_dist = par["ch_dist"]
-        freq = par["freq"]
-        allocation = par["allocation"]
-            
     # Special options
     if jammer != 1:
         if band == 1:
@@ -242,13 +245,14 @@ if __name__ == "__main__":
                 print('Invalid selection')
         else:
             print('Invalid selection')
-        n_channels = (lst_freq - init_freq)//ch_dist
+        n_channels = (lst_freq - init_freq) // ch_dist
         if t_jamming > duration:
             t_jamming = duration
+
     if jamming == 2:
         t_sensing = 0.05
         threshold = 0.0002
-    
+
     # Starting RF Jamming
     if jammer == 1:
         freq = freq * 10e5
@@ -267,7 +271,7 @@ if __name__ == "__main__":
             print("Invalid jamming option selection")
 
     elif jammer == 2:
-        channel = 1         # Initial Channel @ 2.412GHz
+        channel = 1  # Initial Channel @ 2.412GHz
         start_time = time.time()
         while True:
             freq = set_frequency(channel, ch_dist)
@@ -302,15 +306,15 @@ if __name__ == "__main__":
                 # Sensing Channel
                 sense(freq, t_sensing)
                 rx_power = detect()
-    			# If channel is active then jam it
+                # If channel is active then jam it
                 if rx_power > threshold:
                     jam(freq, waveform, power, t_jamming)
             else:
-                print("Invalid jamming option selection")    
-            # Checking elapsed time
+                print("Invalid jamming option selection")
+                # Checking elapsed time
             jamming_time_per_run = time.time() - start_time
             if jamming_time_per_run >= duration:
                 break
-                
+
     else:
         print("invalid jammer selection")
