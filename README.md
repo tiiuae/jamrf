@@ -21,13 +21,19 @@ However, this process will take a few milliseconds. As such, a small amount of d
 
 ## Implementation
 To implement the aforementioned jammers we followed the following methodology
+
 ### Requirements
 1. 2 Hackrf SDRs, one for transmission and the other for reception
 2. [spectrum analyzer GUI for hackrf_sweep](https://github.com/pavsa/hackrf-spectrum-analyzer)
 3. Linux machine
 
 ### Scripts
-Use jamRF_v1.py for a simplistic demonstration and for a more advanced demonstration, use jamRF_v2.py. These python scripts implement the aforementioned jammers. 
+The following python scripts implement the aforementioned jammers:
+1. jamRF_v1: This script implements both proactive and reactive jammers. Here, the waveforms that can be used to jam are; single-tone, swept-sine and Gaussian noise.
+2. jamRF_v2: This script is an extension of jamRF_v1. Here, the waveforms that can be used to jam are; single-tone, QPSK-modulated and Gaussian noise. Furthermore, additional features are added to the jamming techniques. These include:
+i. Energy saving feature: Allows the jammer to switch between active and sleep within one duty cycle.
+ii. Memory feature: Only applies to reactive jammer to improve the jamming efficiency.
+
 ### Setup and Usage
 1. Connect an SMA cable to a hackrf using the isolation chamber I/O ports.
 2. Connect the SDRs to a Linux machine.
