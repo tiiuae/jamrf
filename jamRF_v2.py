@@ -52,7 +52,6 @@ def main():
         #     t_jamming = duration
 
     if jammer == 1:
-        freq = freq * 10e5
         constant(options)
     elif jammer == 2:
         sweeping(init_freq, lst_freq, options)

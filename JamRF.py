@@ -179,13 +179,23 @@ def set_frequency(init_freq, channel, ch_dist):
     return freq
 
 
-def detect():
-    with open("output.bin", mode='rb') as file:
-        fileContent = file.read()
-        samples = np.memmap("output.bin", mode="r", dtype=np.float32)
+def detect(options, my_Sensor):
+    ch_activity_flag = 0
+    if options.get("detector") == 1:
+        with open("output.bin", mode='rb') as file:
+            fileContent = file.read()
+            samples = np.memmap("output.bin", mode="r", dtype=np.float32)
 
-    energy = 0.5 * mean(samples)
-    return energy
+        energy = 0.5 * mean(samples)
+        if energy > my_Sensor.threshold:
+            ch_activity_flag = 1
+    elif options.get("detector") == 2:
+        # implement machine learning based detector here
+        pass
+    else:
+        pass
+
+    return ch_activity_flag
 
 
 def jamming(my_Jammer, freq, options):
@@ -197,9 +207,8 @@ def jamming(my_Jammer, freq, options):
         print(f'\nThe frequency to sense is: {freq/10e5}MHz')
         my_Sensor = Sensor()
         my_Sensor.sense(options.get("freq"))
-        rx_power = detect()
-        print(f'the energy detected is: {rx_power}')
-        if rx_power > my_Sensor.threshold:
+        ch_active = detect(options, my_Sensor)
+        if ch_active == 1:
             print(f'\nSensed activity will jam: {freq/10e5}MHz')
             my_Jammer.jam(freq)
             if options.get("memory") == 1:
@@ -212,7 +221,8 @@ def jamming(my_Jammer, freq, options):
 def constant(options):
     t_j, t_s = enable_energy_savings(options.get("t_jamming"), options.get("memory"))
     my_Jammer = Jammer(options.get("waveform"), options.get("power"), t_j)
-    jamming(my_Jammer, options)
+    freq = options.get("freq") * 10e5
+    jamming(my_Jammer, freq, options)
     time.sleep(t_s)
 
 

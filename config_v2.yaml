@@ -30,4 +30,6 @@
  savings: 0
  # If Energy savings is enabled, then Enter duty cycle in % | default = 100
  duty_cycle: 100
+ # Select type of channel activity detector (1=energy, 2=Machine Learning) | default = 1
+ detector: 1
  
