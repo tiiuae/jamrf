@@ -208,7 +208,7 @@ def detect():
 
 if __name__ == "__main__":
     # Global options
-    config_file = open("config_v2.yaml")
+    config_file = open("config_v1.yaml")
     options = yaml.load(config_file, Loader=yaml.FullLoader)
     jammer = options.get("jammer")
     jamming = options.get("jamming")
