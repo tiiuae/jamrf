@@ -12,7 +12,8 @@
 ###################################################################################
 # Importing Libraries
 ###################################################################################
-
+import math
+import os
 import time
 import yaml
 from gnuradio import gr
@@ -42,10 +43,10 @@ class HackRF:
 class Sensor(HackRF):
     """docstring for ."""
 
-    def __init__(self):
+    def __init__(self, dataset):
         super(Sensor, self).__init__()
-        self.t_sensing = 0.05
-        self.threshold = 0.0002
+        self.t_sensing = 5
+        self.dataset = dataset
 
     def sense(self, freq):
         tb = gr.top_block()
@@ -75,7 +76,7 @@ class Sensor(HackRF):
                 firdes.WIN_HAMMING,
                 6.76))
 
-        file_sink = blocks.file_sink(gr.sizeof_gr_complex * 1, 'IQ_output.bin', False)
+        file_sink = blocks.file_sink(gr.sizeof_gr_complex * 1, self.dataset, False)
         file_sink.set_unbuffered(True)
 
         tb.connect(osmosdr_source, throttle)
@@ -90,14 +91,14 @@ class Sensor(HackRF):
 
 def main():
     freq = 2462 * 10e5
-    my_sensor = Sensor()
-    my_sensor.sense(freq)
+    cond = 'idle'
+    dataset = f'{cond}_IQ_data.bin'
+    if not os.path.isfile(dataset):
+        my_sensor = Sensor(dataset)
+        my_sensor.sense(freq)
+    else:
+        print("Dataset already generated")
 
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
