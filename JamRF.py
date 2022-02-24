@@ -179,7 +179,7 @@ def set_frequency(init_freq, channel, ch_dist):
     return freq
 
 
-def detect(options, my_Sensor):
+def detect(options, my_sensor):
     ch_activity_flag = 0
     if options.get("detector") == 1:
         with open("output.bin", mode='rb') as file:
@@ -187,7 +187,7 @@ def detect(options, my_Sensor):
             samples = np.memmap("output.bin", mode="r", dtype=np.float32)
 
         energy = 0.5 * mean(samples)
-        if energy > my_Sensor.threshold:
+        if energy > my_sensor.threshold:
             ch_activity_flag = 1
     elif options.get("detector") == 2:
         # implement machine learning based detector here
