@@ -198,19 +198,19 @@ def detect(options, my_Sensor):
     return ch_activity_flag
 
 
-def jamming(my_Jammer, freq, options):
+def jamming(my_jammer, freq, options):
     flag = 0
     if options.get("jamming") == 1:
         print(f'\nThe frequency to jam is: {freq/10e5}MHz')
-        my_Jammer.jam(freq)
+        my_jammer.jam(freq)
     elif options.get("jamming") == 2:
         print(f'\nThe frequency to sense is: {freq/10e5}MHz')
-        my_Sensor = Sensor()
-        my_Sensor.sense(options.get("freq"))
-        ch_active = detect(options, my_Sensor)
+        my_sensor = Sensor()
+        my_sensor.sense(options.get("freq"))
+        ch_active = detect(options, my_sensor)
         if ch_active == 1:
             print(f'\nSensed activity will jam: {freq/10e5}MHz')
-            my_Jammer.jam(freq)
+            my_jammer.jam(freq)
             if options.get("memory") == 1:
                 flag = 1
     else:
@@ -220,9 +220,9 @@ def jamming(my_Jammer, freq, options):
 
 def constant(options):
     t_j, t_s = enable_energy_savings(options.get("t_jamming"), options.get("memory"))
-    my_Jammer = Jammer(options.get("waveform"), options.get("power"), t_j)
+    my_jammer = Jammer(options.get("waveform"), options.get("power"), t_j)
     freq = options.get("freq") * 10e5
-    jamming(my_Jammer, freq, options)
+    jamming(my_jammer, freq, options)
     time.sleep(t_s)
 
 
@@ -232,9 +232,9 @@ def sweeping(init_freq, lst_freq, options):
     t_j, t_s = enable_energy_savings(options.get("t_jamming"), options)
     start_time = time.time()
     while True:
-        my_Jammer = Jammer(options.get("waveform"), options.get("power"), t_j)
+        my_jammer = Jammer(options.get("waveform"), options.get("power"), t_j)
         freq = set_frequency(init_freq, channel, options.get("ch_dist")*10e5)
-        m_flag = jamming(my_Jammer, freq, options)
+        m_flag = jamming(my_jammer, freq, options)
         time.sleep(t_s)
         if m_flag == 0:
             channel = 1 if channel > n_channels else channel + 1
@@ -251,9 +251,9 @@ def hopping(init_freq, lst_freq, options):
     t_j, t_s = enable_energy_savings(options.get("t_jamming"), options)
     start_time = time.time()
     while True:
-        my_Jammer = Jammer(options.get("waveform"), options.get("power"), t_j)
+        my_jammer = Jammer(options.get("waveform"), options.get("power"), t_j)
         freq = set_frequency(init_freq, channel, options.get("ch_dist")*10e5)
-        m_flag = jamming(my_Jammer, freq, options)
+        m_flag = jamming(my_jammer, freq, options)
         time.sleep(t_s)
         if m_flag == 0:
             channel = randint(1, n_channels + 1)
