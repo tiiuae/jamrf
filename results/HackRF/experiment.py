@@ -9,7 +9,7 @@
 # Author: abubakar
 # GNU Radio version: 3.8.1.0
 
-from JamRF import constant, sweeping, hopping
+from HackRF.JamRF import sweeping, hopping
 
 def main():
     """
