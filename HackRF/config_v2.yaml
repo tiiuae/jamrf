@@ -3,9 +3,9 @@
  # Select Frequency operating range (1=2.4GHz, 2=5GHz) | default = 1
  band: 1
  # Select Jammer Type (1=constant, 2=sweeping, 3=random channel hopping) | default = 1
- jammer: 3
+ jammer: 1
  # Select Type of Jamming (1=proactive, 2=reactive) | default = 1
- jamming: 2
+ jamming: 1
  # Select Jamming waveform (1=single tone, 2=QPSK modulated, 3=gaussian noise) | default = 3
  waveform: 2
  # Enter Jammer transmit power in dBm (Min = -40dBm, Max = 13dBm) | default = 6dBm
@@ -30,6 +30,6 @@
  savings: 0
  # If Energy savings is enabled, then Enter duty cycle in % | default = 100
  duty_cycle: 100
- # Select type of channel activity detector (1=energy, 2=Machine Learning) | default = 1
+ # Select type of spectrum sensing (1=energy detection, 2=Machine Learning-based detection) | default = 1
  detector: 1
  

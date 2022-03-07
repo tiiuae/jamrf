@@ -36,7 +36,7 @@ class HackRF:
     """docstring for ."""
 
     def __init__(self):
-        self.samp_rate = 20e6
+        self.samp_rate = 2e6
         self.sdr_bandwidth = 20e6
 
 
@@ -45,7 +45,7 @@ class Sensor(HackRF):
 
     def __init__(self, dataset):
         super(Sensor, self).__init__()
-        self.t_sensing = 5
+        self.t_sensing = 0.5
         self.dataset = dataset
 
     def sense(self, freq):
@@ -90,14 +90,24 @@ class Sensor(HackRF):
 
 
 def main():
-    freq = 2462 * 10e5
-    cond = 'idle'
-    dataset = f'{cond}_IQ_data.bin'
-    if not os.path.isfile(dataset):
-        my_sensor = Sensor(dataset)
-        my_sensor.sense(freq)
-    else:
-        print("Dataset already generated")
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    dataset_path = os.path.join(BASE_DIR, "datasets")
+    frequencies = [2412, 2417, 2422, 2427, 2432, 2437, 2442, 2447, 2452, 2457, 2462, 2467, 2472, 2484]
+    cond = 'raw'
+    location = 'office'  # ['lab', 'home', 'chamber','office']
+    bursts = range(10)
+    delay = 10
+    for freq in frequencies:
+        for burst in bursts:
+            dataset = f'{dataset_path}/{cond}/{location}/data_{freq}_{burst+1}.bin'
+            if not os.path.isfile(dataset):
+                my_sensor = Sensor(dataset)
+                my_sensor.sense(freq * 10e5)
+                print("\nDataset generated")
+                time.sleep(delay)
+            else:
+                print("Dataset already generated")
+    print("Done")
 
 
 if __name__ == '__main__':
