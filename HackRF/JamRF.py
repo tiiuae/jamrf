@@ -206,7 +206,7 @@ def jamming(my_jammer, freq, options):
     elif options.get("jamming") == 2:
         print(f'\nThe frequency to sense is: {freq/10e5}MHz')
         my_sensor = Sensor()
-        my_sensor.sense(options.get("freq"))
+        my_sensor.sense(freq)
         ch_active = detect(options, my_sensor)
         if ch_active == 1:
             print(f'\nSensed activity will jam: {freq/10e5}MHz')
