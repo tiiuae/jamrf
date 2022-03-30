@@ -1,24 +1,23 @@
-
 % In this script, we simulate the performance of 802.11n in the presence of
 % jammer
 clc
 clear
 close
 %% Waveform Configuration
-% Create a format configuration object for a 2-by-2 HT transmission
+% Create a format configuration object for a 1-by-1 HT transmission
 cfgHT = wlanHTConfig;
 cfgHT.ChannelBandwidth = 'CBW20'; % 20 MHz channel bandwidth
-cfgHT.NumTransmitAntennas = 2;    % 2 transmit antennas
-cfgHT.NumSpaceTimeStreams = 2;    % 2 space-time streams
+cfgHT.NumTransmitAntennas = 1;    % 1 transmit antennas
+cfgHT.NumSpaceTimeStreams = 1;    % 1 space-time streams
 cfgHT.PSDULength = 1000;          % PSDU length in bytes
-cfgHT.MCS = 15;                   % 2 spatial streams, 64-QAM rate-5/6
+cfgHT.MCS = 4;                    % 1 spatial streams, 16-QAM rate-3/4
 cfgHT.ChannelCoding = 'BCC';      % BCC channel coding
 %% Channel Configuration
 % Create and configure the tranmit channel
 tgnChannel = wlanTGnChannel;
 tgnChannel.DelayProfile = 'Model-B';
 tgnChannel.NumTransmitAntennas = cfgHT.NumTransmitAntennas;
-tgnChannel.NumReceiveAntennas = 2;
+tgnChannel.NumReceiveAntennas = 1;
 tgnChannel.TransmitReceiveDistance = 10; % Distance in meters for NLOS
 tgnChannel.LargeScaleFadingEffect = 'None';
 tgnChannel.NormalizeChannelOutputs = false;
@@ -32,7 +31,7 @@ tgnChannel1.TransmitReceiveDistance = 5; % Distance in meters for NLOS
 tgnChannel1.LargeScaleFadingEffect = 'None';
 tgnChannel1.NormalizeChannelOutputs = false;
 %% Simulation Parameters
-snr = 25:5:45;
+snr = 0:5:45;
 maxNumPEs = 200; % The maximum number of packet errors at an SNR point
 maxNumPackets = 10000; % The maximum number of packets at an SNR point
 % Get the baseband sampling rate
@@ -79,7 +78,7 @@ for k=1:length(JSR_dB)%loop for each given JSR
             % Add trailing zeros to allow for channel filter delay
             tx = [tx; zeros(15,cfgHT.NumTransmitAntennas)]; %#ok<AGROW>
             
-            %Generate single tone jammer for each given JSR
+            %Generate jammer for each given JSR
             [L,j] = size(tx);
             Eb = sum(sum(abs(tx).^2))/(L*j);
             if jammer == 1
@@ -158,7 +157,7 @@ for k=1:length(JSR_dB)%loop for each given JSR
             count=count+1;
             n = n+1;
         end
-        bitErrorRate(k,i) = ber/((n-1)*1000*8);
+        bitErrorRate(k,i) = ber/(count*1000*8);
         % Calculate packet error rate (PER) at SNR point
         packetErrorRate(k,i) = numPacketErrors/(n-1);
         disp(['SNR ' num2str(snr(i))...
