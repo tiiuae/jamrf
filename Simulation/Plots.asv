@@ -22,31 +22,33 @@ PER4 = PER4.packetErrorRate;
 BER4 = BER4.bitErrorRate;
 %% Plot Packet Error Rate vs SNR Results
 figure (1);
-semilogy(snr,PER1,'k-o','LineWidth',1,'MarkerSize',7);
+semilogy(snr,BER1,'k-o','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr,PER2(2,:),'r-*','LineWidth',1,'MarkerSize',7);
+semilogy(snr,PER2(4,:),'r-*','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr,PER3(2,:),'b-s','LineWidth',1,'MarkerSize',7);
+semilogy(snr,PER3(4,:),'b-s','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr,PER4(2,:),'m-d','LineWidth',1,'MarkerSize',7);
+semilogy(snr,PER4(4,:),'m-d','LineWidth',1,'MarkerSize',7);
 xlabel('snr (dB)');
 ylabel('Packet Error Rate (PER)');
 legend('No Jamming','Single-tone Jamming','QPSK Jamming',...
     'Noise Jamming','Location','southwest');
 ylim([10^-3 1]);
+grid on
 hold off
 
 figure(2)
 semilogy(snr,BER1,'k-o','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr,BER2(2,:),'r-*','LineWidth',1,'MarkerSize',7);
+semilogy(snr,BER2(4,:),'r-*','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr,BER3(2,:),'b-s','LineWidth',1,'MarkerSize',7);
+semilogy(snr,BER3(4,:),'b-s','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr,BER4(2,:),'m-d','LineWidth',1,'MarkerSize',7);
+semilogy(snr,BER4(4,:),'m-d','LineWidth',1,'MarkerSize',7);
 xlabel('snr (dB)');
 ylabel('Bit Error Rate (BER)');
 legend('No Jamming','Single-tone Jamming','QPSK Jamming',...
     'Noise Jamming','Location','southwest');
 ylim([10^-4 1]);
+grid on
 hold off

@@ -17,7 +17,7 @@ import json
 n_exps = 5
 results = list()
 for exp in range(n_exps):
-    filename = f'./results/exp{exp+1}/results.json'
+    filename = f'./exp{exp+1}/results.json'
     with open(filename) as file:
         content = json.load(file)
         results.append(content)
@@ -43,16 +43,12 @@ plt.xlabel('Power (dBm)')
 plt.ylabel('Packet Receive Ratio')
 plt.legend()
 plt.show()
+
 # experiment 2 plot
 ch_dists = list(results[1]['mod_sine'].keys())
 single_tone_vals = list(results[1]['mod_sine'].values())
 QPSK_mod_vals = list(results[1]['swept_sine'].values())
 AWGN_vals = list(results[1]['noise'].values())
-QPSK_offset = 0.4
-AWGN_offset = 0.2
-QPSK_mod_vals = [QPSK_mod_vals[i]-QPSK_offset for i in range(len(QPSK_mod_vals))]
-AWGN_vals = [AWGN_vals[i]-AWGN_offset for i in range(len(AWGN_vals))]
-
 
 # plotting the points
 plt.plot(ch_dists, single_tone_vals, label = "Single-tone Jamming",color='green', linewidth = 2,
@@ -107,9 +103,9 @@ rem_sweep = list(results[4]['sweeping'].values())
 rem_hop = list(results[4]['hopping'].values())
 
 # plotting the points
-plt.plot(t_jamming_vals, re_sweep, label = "reactive sweeping", color='blue', linewidth = 2,
+plt.plot(t_jamming_vals, re_sweep, label = "reactive sweeping memoryless", color='blue', linewidth = 2,
          marker='d', markersize=7)
-plt.plot(t_jamming_vals, re_hop, label = "reactive hopping",color='purple', linestyle='--', linewidth = 2,
+plt.plot(t_jamming_vals, re_hop, label = "reactive hopping memoryless",color='purple', linestyle='--', linewidth = 2,
          marker='d', markersize=7)
 plt.plot(t_jamming_vals, rem_sweep, label = "reactive sweeping with memory", color='magenta', linewidth = 2,
          marker='s', markersize=7)

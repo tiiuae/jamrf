@@ -7,7 +7,7 @@ close
 %% Simulation Parameters
 snr_dB = 0:5:45;
 JSR_dB = [-100, -10,-5, 0, 5, 10]; %Jammer to Signal ratios (dB)
-n_jammers = 2;
+n_jammers = 1;
 Fj = 0.0001; %Jamming tone - normalized frequency (-0.5 < F < 0.5)
 Thetaj = rand(1,1)*2*pi;%random jammer phase(0 to 2*pi radians)
 %% Processing SNR Points
@@ -43,21 +43,20 @@ end
 %% Plot Bit Error Rate vs SNR Results
 
 figure(1)
-semilogy(snr_dB,bitErrorRate(1,:),'k--');
+semilogy(snr_dB,bitErrorRate(1,:),'k--','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr_dB,bitErrorRate(2,:),'r-*');
+semilogy(snr_dB,bitErrorRate(2,:),'r-*','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr_dB,bitErrorRate(3,:),'b-d');
+semilogy(snr_dB,bitErrorRate(3,:),'b-d','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr_dB,bitErrorRate(4,:),'m-s');
+semilogy(snr_dB,bitErrorRate(4,:),'m-s','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr_dB,bitErrorRate(5,:),'g-h');
+semilogy(snr_dB,bitErrorRate(5,:),'g-h','LineWidth',1,'MarkerSize',7);
 hold on 
-semilogy(snr_dB,bitErrorRate(6,:),'c-<');
+semilogy(snr_dB,bitErrorRate(6,:),'c-<','LineWidth',1,'MarkerSize',7);
 xlabel('snr (dB)');
 ylabel('Bit Error Rate (BER)');
 legend('JSR = -100dB','JSR = -10dB','JSR = -5dB',...
     'JSR = 0dB','JSR = 5dB','JSR = 10dB','Location','southwest');
 ylim([10^-5 1]);
-grid on;
 hold off
