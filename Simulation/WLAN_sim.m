@@ -15,7 +15,7 @@ cfgHT.ChannelCoding = 'BCC';      % BCC channel coding
 %% Channel Configuration
 % Create and configure the tranmit channel
 tgnChannel = wlanTGnChannel;
-tgnChannel.DelayProfile = 'Model-B';
+tgnChannel.DelayProfile = 'Model-A';
 tgnChannel.NumTransmitAntennas = cfgHT.NumTransmitAntennas;
 tgnChannel.NumReceiveAntennas = 1;
 tgnChannel.TransmitReceiveDistance = 10; % Distance in meters for NLOS
@@ -24,7 +24,7 @@ tgnChannel.NormalizeChannelOutputs = false;
 
 % Create and configure the jamming channel
 tgnChannel1 = wlanTGnChannel;
-tgnChannel1.DelayProfile = 'Model-B';
+tgnChannel1.DelayProfile = 'Model-A';
 tgnChannel1.NumTransmitAntennas = 1;
 tgnChannel1.NumReceiveAntennas = 1;
 tgnChannel1.TransmitReceiveDistance = 5; % Distance in meters for NLOS
@@ -42,7 +42,7 @@ ofdmInfo = wlanHTOFDMInfo('HT-Data',cfgHT);
 tgnChannel.SampleRate = fs;
 % Indices for accessing each field within the time-domain packet
 ind = wlanFieldIndices(cfgHT);
-JSR_dB = [-100, -10,-5, 0, 2]; %Jammer to Signal ratios (dB)
+JSR_dB = [-100, -10,-5, 0, 5 10]; %Jammer to Signal ratios (dB)
 n_jammers = 3;
 Fj = 0.0001; %Jamming tone - normalized frequency (-0.5 < F < 0.5)
 Thetaj = rand(1,1)*2*pi;%random jammer phase(0 to 2*pi radians)
@@ -196,10 +196,12 @@ hold on
 semilogy(snr,packetErrorRate(4,:),'m-*');
 hold on 
 semilogy(snr,packetErrorRate(5,:),'g-*');
+hold on 
+semilogy(snr,packetErrorRate(6,:),'c-*');
 xlabel('snr (dB)');
 ylabel('Packet Error Rate (PER)');
 legend('JSR = -100dB','JSR = -10dB','JSR = -5dB',...
-    'JSR = 0dB','JSR = 2dB','Location','southwest');
+    'JSR = 0dB','JSR = 5dB','JSR = 10dB','Location','southwest');
 ylim([10^-5 1]);
 grid on;
 %title('802.11n 20MHz, MCS15, Direct Mapping, 2x2 Channel Model B-NLOS');
@@ -215,10 +217,12 @@ hold on
 semilogy(snr,bitErrorRate(4,:),'m-*');
 hold on 
 semilogy(snr,bitErrorRate(5,:),'g-*');
+hold on 
+semilogy(snr,bitErrorRate(6,:),'c-*');
 xlabel('snr (dB)');
 ylabel('Bit Error Rate (BER)');
 legend('JSR = -100dB','JSR = -10dB','JSR = -5dB',...
-    'JSR = 0dB','JSR = 2dB','Location','southwest');
+    'JSR = 0dB','JSR = 5dB','JSR = 10dB','Location','southwest');
 ylim([10^-5 1]);
 grid on;
 %title('802.11n 20MHz, MCS15, Direct Mapping, 2x2 Channel Model B-NLOS');
