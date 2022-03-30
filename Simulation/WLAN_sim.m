@@ -9,7 +9,7 @@ cfgHT = wlanHTConfig;
 cfgHT.ChannelBandwidth = 'CBW20'; % 20 MHz channel bandwidth
 cfgHT.NumTransmitAntennas = 1;    % 1 transmit antennas
 cfgHT.NumSpaceTimeStreams = 1;    % 1 space-time streams
-cfgHT.PSDULength = 1000;          % PSDU length in bytes
+cfgHT.PSDULength = 1024;          % PSDU length in bytes
 cfgHT.MCS = 4;                    % 1 spatial streams, 16-QAM rate-3/4
 cfgHT.ChannelCoding = 'BCC';      % BCC channel coding
 %% Channel Configuration
