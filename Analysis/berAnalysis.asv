@@ -21,11 +21,11 @@ for k=1:length(JSR_dB)%loop for each given JSR
         SNR = 10.^(snr_dB(i)/10); %Signal-to-noise ratio in linear scale
         JSR = 10.^(JSR_dB(k)/10); %Jammer-to-Signal ratio in linear scale
         if jammer == 1
-            d = sqrt(SNR/((1+SNR*JSR)));
+            d = sqrt(SNR/(10*(1+SNR*JSR)));
             bitErrorRate(k,i) =1-0.25*(erf(d)^2+2*erf(d)*(1-2*erfc(d))+(1-2*erfc(d))^2);
         else
             JNR = 2*JSR*SNR;
-            bitErrorRate(k,i) = 3/8 * (erfc(sqrt(SNR)+sqrt(0.5*JNR))+erfc(sqrt(SNR)-sqrt(0.5*JNR))); 
+            bitErrorRate(k,i) = 3/8 * (erfc(sqrt(0.09*SNR)+sqrt(0.5*JNR))+erfc(sqrt(0.1*SNR)-sqrt(0.5*JNR))); 
         end
     end
 end
