@@ -117,7 +117,7 @@ def jam(freq, waveform, power, delay=1):
     elif waveform == 2:
         source = analog.sig_source_f(samp_rate, analog.GR_SIN_WAVE, 1000, 1, 0, 0)
     elif waveform == 3:
-        source = analog.noise_source_c(analog.GR_GAUSSIAN, 1, 0.5)
+        source = analog.noise_source_c(analog.GR_GAUSSIAN, 1.0, 1)
     else:
         print("invalid selection")
 
@@ -147,11 +147,14 @@ def jam(freq, waveform, power, delay=1):
         tb.connect(source, freq_mod, osmosdr_sink)
     else:
         tb.connect(source, osmosdr_sink)
-
+    print(delay)
     tb.start()
-    time.sleep(delay)
-    tb.stop()
-    tb.wait()
+    if delay != 0:
+        time.sleep(delay)
+        tb.stop()
+        tb.wait()
+    else:
+        tb.wait()
 
 
 ##################################################################################
@@ -220,6 +223,8 @@ if __name__ == "__main__":
     allocation = options.get("allocation")
     t_jamming = options.get("t_jamming")
     duration = options.get("duration")
+    print(jammer, t_jamming)
+
 
     # Special options
     if jammer != 1:
@@ -257,6 +262,7 @@ if __name__ == "__main__":
     if jammer == 1:
         freq = freq * 10e5
         if jamming == 1:
+            print("JAM!")
             jam(freq, waveform, power, t_jamming)
         elif jamming == 2:
             # Sensing Channel
