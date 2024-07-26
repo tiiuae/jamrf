@@ -73,7 +73,7 @@ class Sensor(HackRF):
                 self.samp_rate,
                 75e3,
                 25e3,
-                firdes.WIN_HAMMING,
+                window.WIN_HAMMING,
                 6.76))
 
         file_sink = blocks.file_sink(gr.sizeof_gr_complex * 1, self.dataset, False)
