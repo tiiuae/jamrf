@@ -153,7 +153,7 @@ class Sensor(HackRF):
                 self.samp_rate,
                 75e3,
                 25e3,
-                firdes.WIN_HAMMING,
+                window.WIN_HAMMING,
                 6.76))
         complex_to_mag_squared = blocks.complex_to_mag_squared(1)
 
