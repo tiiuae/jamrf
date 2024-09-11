@@ -247,7 +247,7 @@ def sweeping(init_freq, lst_freq, options):
 
 def hopping(init_freq, lst_freq, options):
     n_channels = (lst_freq - init_freq) // (options.get("ch_dist")*10e5)
-    channel = randint(1, n_channels + 1)
+    channel = int(randint(1, n_channels + 1))
     t_j, t_s = enable_energy_savings(options.get("t_jamming"), options)
     start_time = time.time()
     while True:
@@ -256,7 +256,7 @@ def hopping(init_freq, lst_freq, options):
         m_flag = jamming(my_jammer, freq, options)
         time.sleep(t_s)
         if m_flag == 0:
-            channel = randint(1, n_channels + 1)
+            channel = int(randint(1, n_channels + 1))
         jamming_time_per_run = time.time() - start_time
         if jamming_time_per_run >= options.get("duration"):
             break

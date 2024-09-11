@@ -303,7 +303,7 @@ if __name__ == "__main__":
     elif jammer == 3:
         start_time = time.time()
         while True:
-            channel = randint(1, n_channels + 1)
+            channel = int(randint(1, int(n_channels) + 1))
             freq = set_frequency(channel, ch_dist)
             if jamming == 1:
                 # Jam
